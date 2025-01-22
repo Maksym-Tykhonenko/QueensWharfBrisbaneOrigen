@@ -3,7 +3,7 @@ workflows:
     name: Queen Travel to Brisbane
     max_build_duration: 120
     integrations:
-      app_store_connect: QueenTraveltoBrisbaneCodemagic
+      app_store_connect: QueenTraveltoBrisbaneAPIKeyNew
     environment:
       ios_signing:
         distribution_type: app_store
