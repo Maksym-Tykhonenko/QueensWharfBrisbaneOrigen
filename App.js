@@ -33,19 +33,19 @@ function App() {
   //console.log('addPartToLinkOnce in App==>', addPartToLinkOnce);
   //////////////////Parametrs
   const [idfa, setIdfa] = useState(false);
-  //console.log('idfa==>', idfa);
+  console.log('idfa==>', idfa);
   const [oneSignalId, setOneSignalId] = useState(null);
-  //console.log('oneSignalId==>', oneSignalId);
+  console.log('oneSignalId==>', oneSignalId);
   const [appsUid, setAppsUid] = useState(null);
   const [sab1, setSab1] = useState();
   const [pid, setPid] = useState();
-  //console.log('appsUid==>', appsUid);
-  //console.log('sab1==>', sab1);
+  console.log('appsUid==>', appsUid);
+  console.log('sab1==>', sab1);
   //console.log('pid==>', pid);
   const [customerUserId, setCustomerUserId] = useState(null);
-  //console.log('customerUserID==>', customerUserId);
+  console.log('customerUserID==>', customerUserId);
   const [idfv, setIdfv] = useState();
-  //console.log('idfv==>', idfv);
+  console.log('idfv==>', idfv);
   /////////Atributions
   const [adServicesAtribution, setAdServicesAtribution] = useState(null);
   //const [adServicesKeywordId, setAdServicesKeywordId] = useState(null);
@@ -393,7 +393,9 @@ function App() {
       const res = await ReactNativeIdfaAaid.getAdvertisingInfo();
       if (!res.isAdTrackingLimited) {
         setIdfa(res.id);
-        setAceptTransperency(true);
+        setTimeout(() => {
+          setAceptTransperency(true);
+        }, 1500);
         console.log('ЗГОДА!!!!!!!!!');
       } else {
         //console.log('Ad tracking is limited');
@@ -401,7 +403,10 @@ function App() {
         //setIdfa(null);
         fetchIdfa();
         //Alert.alert('idfa', idfa);
-        setAceptTransperency(true);
+        setTimeout(() => {
+          setAceptTransperency(true);
+        }, 1500);
+
         console.log('НЕ ЗГОДА!!!!!!!!!');
       }
     } catch (err) {
@@ -441,6 +446,36 @@ function App() {
     return;
   }, []);
 
+  ////////////////////////// Generate link
+  let baseUrl = `${INITIAL_URL}${URL_IDENTIFAIRE}?${URL_IDENTIFAIRE}=1&idfa=${idfa}&uid=${appsUid}&customerUserId=${customerUserId}&idfv=${idfv}&oneSignalId=${oneSignalId}`;
+
+  // Логіка обробки sab
+  let additionalParams = '';
+  if (sab1) {
+    if (sab1.includes('_')) {
+      // Якщо sab містить "_", розбиваємо і формуємо subId
+      let sabParts = sab1.split('_');
+      additionalParams = sabParts
+        .map((part, index) => `subId${index + 1}=${part}`)
+        .join('&');
+    } else {
+      // Якщо sab не містить "_", встановлюємо значення subId1=sab
+      additionalParams = `subId1=${sab1}`;
+    }
+  } else {
+    // Якщо sab пустий або undefined, subId1 залишається порожнім
+    additionalParams = 'subId1=';
+  }
+  //console.log('additionalParams', additionalParams);
+
+  const product =
+    `${baseUrl}` +
+    `&${additionalParams}` +
+    (pid ? `&pid=${pid}` : '') +
+    (!addPartToLinkOnce ? `&yhugh=true` : '');
+
+  console.log('My product Url ==>', product);
+
   ///////// Route
   const Route = ({isFatch}) => {
     if (!aceptTransperency) {
@@ -453,16 +488,17 @@ function App() {
         <Stack.Navigator>
           <Stack.Screen
             initialParams={{
-              addPartToLinkOnce,
-              responseToPushPermition, //в вебВью якщо тру то відправити івент push_subscribe
-              oneSignalId, //додати до фінальної лінки
-              idfa: idfa,
-              sab1: sab1,
-              pid: pid,
-              uid: appsUid,
-              customerUserId: customerUserId,
-              idfv: idfv,
-              adAtribution: adServicesAtribution,
+              //addPartToLinkOnce,
+              //responseToPushPermition, //в вебВью якщо тру то відправити івент push_subscribe
+              //oneSignalId, //додати до фінальної лінки
+              //idfa: idfa,
+              //sab1: sab1,
+              //pid: pid,
+              //uid: appsUid,
+              //customerUserId: customerUserId,
+              //idfv: idfv,
+              //adAtribution: adServicesAtribution,
+              product,
             }}
             name="QueensWharfBrisbaneProdactScreen"
             component={QueensWharfBrisbaneProdactScreen}
