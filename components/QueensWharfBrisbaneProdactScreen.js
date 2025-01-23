@@ -143,6 +143,7 @@ const QueensWharfBrisbaneProdactScreen = ({navigation, route}) => {
     // Якщо sab пустий або undefined, subId1 залишається порожнім
     additionalParams = 'subId1=';
   }
+  //console.log('additionalParams', additionalParams);
 
   const product =
     `${baseUrl}` +
@@ -177,7 +178,7 @@ const QueensWharfBrisbaneProdactScreen = ({navigation, route}) => {
   const handleNavigationStateChange = navState => {
     const {url} = navState;
     const {mainDocumentURL} = navState;
-    console.log('NavigationState: ', navState);
+    //console.log('NavigationState: ', navState);
     if (
       url.includes(
         'https://api.paymentiq.io/paymentiq/api/piq-redirect-assistance',
@@ -234,7 +235,7 @@ const QueensWharfBrisbaneProdactScreen = ({navigation, route}) => {
 
   const onShouldStartLoadWithRequest = event => {
     const {url} = event;
-    console.log('onShouldStartLoadWithRequest========> ', event);
+    //console.log('onShouldStartLoadWithRequest========> ', event);
 
     if (url.startsWith('mailto:')) {
       Linking.openURL(url);

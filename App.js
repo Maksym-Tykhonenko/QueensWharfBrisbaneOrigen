@@ -40,7 +40,7 @@ function App() {
   const [sab1, setSab1] = useState();
   const [pid, setPid] = useState();
   //console.log('appsUid==>', appsUid);
-  //console.log('sab1==>', sab1);
+  console.log('sab1==>', sab1);
   //console.log('pid==>', pid);
   const [customerUserId, setCustomerUserId] = useState(null);
   //console.log('customerUserID==>', customerUserId);
@@ -166,13 +166,14 @@ function App() {
       setAdServicesAtribution(attribution);
       //setAdServicesKeywordId(keywordId);
       setSab1(attribution ? 'asa' : '');
+
       // Вывод значений в консоль
       //Alert.alert(`sab1: ${sab1}`);
       //Alert.alert(`Attribution: ${attribution}`);
       //console.log(`Attribution: ${attribution}` + `KeywordId:${keywordId}`);
     } catch (error) {
       const {message} = error;
-      // Alert.alert(message); // --> Some error message
+      //Alert.alert(message); // --> Some error message
     }
   };
 
