@@ -40,7 +40,7 @@ function App() {
   const [sab1, setSab1] = useState();
   const [pid, setPid] = useState();
   //console.log('appsUid==>', appsUid);
-  console.log('sab1==>', sab1);
+  //console.log('sab1==>', sab1);
   //console.log('pid==>', pid);
   const [customerUserId, setCustomerUserId] = useState(null);
   //console.log('customerUserID==>', customerUserId);
@@ -281,7 +281,7 @@ function App() {
       });
 
       appsFlyer.startSdk();
-      console.log('StartAppsFly');
+      //console.log('StartAppsFly');
     } catch (error) {
       console.log(
         'App.js Помилка під час виконання операцій AppsFlyer:',
