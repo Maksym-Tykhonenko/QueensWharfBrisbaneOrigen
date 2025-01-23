@@ -110,7 +110,7 @@ const QueensWharfBrisbaneProdactScreen = ({navigation, route}) => {
       fetch(
         `${INITIAL_URL}${URL_IDENTIFAIRE}?utretg=webview_open&jthrhg=${timestamp_user_id}`,
       );
-      console.log('Івент webview_open відправлено!');
+      //console.log('Івент webview_open відправлено!');
     }
   }, []);
 

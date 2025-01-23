@@ -49,6 +49,8 @@ function App() {
   /////////Atributions
   const [adServicesAtribution, setAdServicesAtribution] = useState(null);
   //const [adServicesKeywordId, setAdServicesKeywordId] = useState(null);
+  const [aceptTransperency, setAceptTransperency] = useState(false);
+  console.log('aceptTransperency==>', aceptTransperency);
 
   const INITIAL_URL = `https://breathtaking-prestigious-thrill.space/`;
   const URL_IDENTIFAIRE = `Cf3J6b28`;
@@ -97,7 +99,8 @@ function App() {
         setCustomerUserId(parsedData.customerUserId);
         setIdfv(parsedData.idfv);
         setAdServicesAtribution(parsedData.adServicesAtribution);
-        //setAdServicesKeywordId(parsedData.adServicesKeywordId);
+        setAceptTransperency(parsedData.aceptTransperency);
+        //
         await performAppsFlyerOperationsContinuously();
       } else {
         console.log('Даних немає в AsyncStorage');
@@ -128,6 +131,7 @@ function App() {
         customerUserId,
         idfv,
         adServicesAtribution,
+        aceptTransperency,
       };
       const jsonData = JSON.stringify(data);
       await AsyncStorage.setItem('App', jsonData);
@@ -151,6 +155,7 @@ function App() {
     customerUserId,
     idfv,
     adServicesAtribution,
+    aceptTransperency,
   ]);
 
   const fetchAdServicesAttributionData = async () => {
@@ -388,13 +393,16 @@ function App() {
       const res = await ReactNativeIdfaAaid.getAdvertisingInfo();
       if (!res.isAdTrackingLimited) {
         setIdfa(res.id);
-        //console.log('setIdfa(res.id);');
+        setAceptTransperency(true);
+        console.log('ЗГОДА!!!!!!!!!');
       } else {
         //console.log('Ad tracking is limited');
         setIdfa('00000000-0000-0000-0000-000000000000'); //true
         //setIdfa(null);
         fetchIdfa();
         //Alert.alert('idfa', idfa);
+        setAceptTransperency(true);
+        console.log('НЕ ЗГОДА!!!!!!!!!');
       }
     } catch (err) {
       //console.log('err', err);
@@ -435,6 +443,11 @@ function App() {
 
   ///////// Route
   const Route = ({isFatch}) => {
+    if (!aceptTransperency) {
+      // Показуємо тільки лоудери, поки acceptTransparency не true
+      return null;
+    }
+
     if (isFatch) {
       return (
         <Stack.Navigator>
@@ -511,7 +524,7 @@ function App() {
   return (
     <ContextProvider>
       <NavigationContainer>
-        {!louderIsEnded ? (
+        {!louderIsEnded || !aceptTransperency ? (
           <View
             style={{
               position: 'relative',
